@@ -1,0 +1,1 @@
+# labs-be-java-scaffolding
