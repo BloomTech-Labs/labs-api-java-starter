@@ -39,7 +39,14 @@ public class OktaAuthSecurityConfig extends WebSecurityConfigurerAdapter
             .antMatchers(HttpMethod.PUT,
                 "/users/**")
             .hasAnyRole("ADMIN")
-            .antMatchers("/users/**",
+
+            // *** NOTE EVERYONE CAN READ USERS!!!
+            .antMatchers("/users/**")
+            .permitAll()
+            // .authenticated()
+            // *** NOTE EVERYONE CAN READ USERS!!!
+
+            .antMatchers(
                 "/useremails/**",
                 "/oauth/revoke-token",
                 "/logout")

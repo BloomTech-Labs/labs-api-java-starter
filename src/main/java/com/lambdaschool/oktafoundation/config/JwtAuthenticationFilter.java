@@ -6,6 +6,7 @@ import com.lambdaschool.oktafoundation.repository.UserRepository;
 import com.lambdaschool.oktafoundation.services.RoleService;
 import com.lambdaschool.oktafoundation.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -45,23 +46,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
         Authentication authentication = SecurityContextHolder.getContext()
             .getAuthentication();
 
-        if (userrepos.findByUsername(authentication.getName()) == null)
+        if (!(authentication instanceof AnonymousAuthenticationToken))
         {
-            User newUser = new User(authentication.getName());
+            if (userrepos.findByUsername(authentication.getName()) == null)
+            {
+                User newUser = new User(authentication.getName());
 
-            // adds a default USER role to this new user
-            Set<UserRoles> newRoles = new HashSet<>();
-            newRoles.add(new UserRoles(newUser,
-                roleService.findByName("user")));
-            newUser.setRoles(newRoles);
+                // adds a default USER role to this new user
+                Set<UserRoles> newRoles = new HashSet<>();
+                newRoles.add(new UserRoles(newUser,
+                    roleService.findByName("user")));
+                newUser.setRoles(newRoles);
 
-            userService.save(newUser);
+                userService.save(newUser);
+            } else
+            {
+                // we already have this user so nothing to update
+            }
+
+            // continue the filter chain.
         } else
         {
-            // we already have this user so nothing to update
+            // we do not have a user so nothing to check!
         }
-
-        // continue the filter chain.
         filterChain.doFilter(httpServletRequest,
             httpServletResponse);
     }
