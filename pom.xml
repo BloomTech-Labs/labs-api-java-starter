@@ -117,7 +117,7 @@
     </dependencies>
 
     <build>
-        <finalName>jrmmba-stumps</finalName>
+        <finalName>jrmmba-oktafoundation</finalName>
 
         <plugins>
             <plugin>
