@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 
 // This allows us to further restrict access to an endpoint inside of a controller.
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -70,6 +71,12 @@ public class OktaAuthSecurityConfig extends WebSecurityConfigurerAdapter
         http
             .csrf()
             .disable();
+
+        // Insert the JwtAuthenticationFilter so that it can grab credentials from the
+        // local database before they are checked for authorization
+        http
+            .addFilterBefore(authenticationTokenFilterBean(),
+                FilterSecurityInterceptor.class);
 
         // force a non-empty response body for 401's to make the response more browser friendly
         Okta.configureResourceServer401ResponseBody(http);
