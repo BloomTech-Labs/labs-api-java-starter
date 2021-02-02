@@ -222,7 +222,7 @@ public class UserController
     public ResponseEntity<?> getCurrentUserInfo(Authentication authentication)
     {
         User u = userService.findByName(authentication.getName());
-        return new ResponseEntity<>(authentication,
+        return new ResponseEntity<>(u,
             HttpStatus.OK);
     }
 }

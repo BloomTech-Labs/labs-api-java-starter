@@ -42,6 +42,9 @@ public class UserServiceImplUnitTestNoDB
     private UserRepository userrepos;
 
     @MockBean
+    private RoleService roleService;
+
+    @MockBean
     HelperFunctions helperFunctions;
 
     private List<User> userList;
@@ -281,6 +284,9 @@ public class UserServiceImplUnitTestNoDB
             .add(new Useremail(u2,
                 "tiger@tiger.local"));
 
+        Mockito.when(roleService.findRoleById(2))
+            .thenReturn(r2);
+
         Mockito.when(userrepos.save(any(User.class)))
             .thenReturn(u2);
 
@@ -306,6 +312,9 @@ public class UserServiceImplUnitTestNoDB
 
         Mockito.when(userrepos.findById(103L))
             .thenReturn(Optional.of(u2));
+
+        Mockito.when(roleService.findRoleById(2))
+            .thenReturn(r2);
 
         Mockito.when(userrepos.save(any(User.class)))
             .thenReturn(u2);
@@ -345,6 +354,9 @@ public class UserServiceImplUnitTestNoDB
         Mockito.when(userrepos.save(any(User.class)))
             .thenReturn(u2);
 
+        Mockito.when(roleService.findRoleById(2))
+            .thenReturn(r2);
+
         assertEquals("bunny@email.thump",
             userService.update(u2,
                 103L)
@@ -376,6 +388,9 @@ public class UserServiceImplUnitTestNoDB
 
         Mockito.when(userrepos.findById(103L))
             .thenReturn(Optional.empty());
+
+        Mockito.when(roleService.findRoleById(2))
+            .thenReturn(r2);
 
         Mockito.when(helperFunctions.isAuthorizedToMakeChange(anyString()))
             .thenReturn(true);
@@ -411,6 +426,9 @@ public class UserServiceImplUnitTestNoDB
         u2.getUseremails()
             .add(new Useremail(u2,
                 "bunny@email.thump"));
+
+        Mockito.when(roleService.findRoleById(2))
+            .thenReturn(r2);
 
         Mockito.when(userrepos.findById(103L))
             .thenReturn(Optional.of(u2));

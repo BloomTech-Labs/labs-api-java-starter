@@ -41,11 +41,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-    classes = OktaFoundationApplicationTest.class)
+    classes = OktaFoundationApplicationTest.class,
+    properties = {
+        "command.line.runner.enabled=false"})
 @AutoConfigureMockMvc
 @WithMockUser(username = "admin",
     roles = {"USER", "ADMIN"})
-public class UserControllerUnitTest
+public class UserControllerUnitTestNoDB
 {
     @Autowired
     private WebApplicationContext webApplicationContext;

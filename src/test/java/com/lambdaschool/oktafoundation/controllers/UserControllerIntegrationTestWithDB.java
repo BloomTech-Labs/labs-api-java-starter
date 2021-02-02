@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @WithMockUser(username = "admin",
     roles = {"USER", "ADMIN"})
-public class UserControllerIntegrationTest
+public class UserControllerIntegrationTestWithDB
 {
     @Autowired
     private WebApplicationContext webApplicationContext;
