@@ -5,6 +5,7 @@ import com.lambdaschool.oktafoundation.services.RoleService;
 import com.lambdaschool.oktafoundation.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
  * after the application context has been loaded.
  */
 @Transactional
+@ConditionalOnProperty(
+    prefix = "command.line.runner",
+    value = "enabled",
+    havingValue = "true",
+    matchIfMissing = true)
 @Component
 public class SeedData
     implements CommandLineRunner

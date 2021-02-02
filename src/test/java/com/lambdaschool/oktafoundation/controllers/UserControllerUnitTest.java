@@ -1,7 +1,7 @@
 package com.lambdaschool.oktafoundation.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lambdaschool.oktafoundation.OktaFoundationApplication;
+import com.lambdaschool.oktafoundation.OktaFoundationApplicationTest;
 import com.lambdaschool.oktafoundation.models.Role;
 import com.lambdaschool.oktafoundation.models.User;
 import com.lambdaschool.oktafoundation.models.UserRoles;
@@ -41,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-    classes = OktaFoundationApplication.class)
+    classes = OktaFoundationApplicationTest.class)
 @AutoConfigureMockMvc
 @WithMockUser(username = "admin",
     roles = {"USER", "ADMIN"})

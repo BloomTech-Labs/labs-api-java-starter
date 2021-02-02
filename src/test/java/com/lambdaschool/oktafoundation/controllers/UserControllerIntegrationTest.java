@@ -1,6 +1,6 @@
 package com.lambdaschool.oktafoundation.controllers;
 
-import com.lambdaschool.oktafoundation.OktaFoundationApplication;
+import com.lambdaschool.oktafoundation.OktaFoundationApplicationTest;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.After;
 import org.junit.Before;
@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-    classes = OktaFoundationApplication.class)
+    classes = OktaFoundationApplicationTest.class)
 @AutoConfigureMockMvc
 @WithMockUser(username = "admin",
     roles = {"USER", "ADMIN"})

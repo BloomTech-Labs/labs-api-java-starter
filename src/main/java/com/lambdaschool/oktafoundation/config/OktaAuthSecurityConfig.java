@@ -4,9 +4,12 @@ import com.okta.spring.boot.oauth.Okta;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+// This allows us to further restrict access to an endpoint inside of a controller.
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @Configuration
 public class OktaAuthSecurityConfig extends WebSecurityConfigurerAdapter
 {
@@ -27,8 +30,7 @@ public class OktaAuthSecurityConfig extends WebSecurityConfigurerAdapter
                 "/swagger-resource/**",
                 "/swagger-ui.html",
                 "/v2/api-docs",
-                "/webjars/**",
-                "/createnewuser")
+                "/webjars/**")
             .permitAll()
             .antMatchers(HttpMethod.POST,
                 "/users/**")
@@ -40,19 +42,16 @@ public class OktaAuthSecurityConfig extends WebSecurityConfigurerAdapter
                 "/users/**")
             .hasAnyRole("ADMIN")
 
-            // *** NOTE EVERYONE CAN READ USERS!!!
+            // *** NOTE AUTHENTICATED CAN READ USERS!!! PATCHES are handled in UserService
             .antMatchers("/users/**")
-            .permitAll()
-            // .authenticated()
-            // *** NOTE EVERYONE CAN READ USERS!!!
-
-            .antMatchers(
-                "/useremails/**",
-                "/oauth/revoke-token",
-                "/logout")
+            .authenticated()
+            // *** Handled at UseremailService Level
+            .antMatchers("/useremails/**")
             .authenticated()
             .antMatchers("/roles/**")
             .hasAnyRole("ADMIN")
+            // *** Endpoints not specified above are automatically denied
+            .anyRequest().denyAll()
             .and()
             .exceptionHandling()
             .and()

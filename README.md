@@ -973,8 +973,6 @@ Status OK
 <details>
 <summary>http://localhost:2019/users/user/name/cinabun</summary>
 
-</details>
-
 ```JSON
 {
     "userid": 7,
@@ -1010,6 +1008,8 @@ Status OK
     ]
 }
 ```
+
+</details>
 
 <details>
 

@@ -200,7 +200,6 @@ public class UserController
      * @param id the primary key of the user you wish to delete
      * @return Status of OK
      */
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(value = "/user/{id}")
     public ResponseEntity<?> deleteUserById(
         @PathVariable
@@ -223,7 +222,7 @@ public class UserController
     public ResponseEntity<?> getCurrentUserInfo(Authentication authentication)
     {
         User u = userService.findByName(authentication.getName());
-        return new ResponseEntity<>(u,
+        return new ResponseEntity<>(authentication,
             HttpStatus.OK);
     }
 }

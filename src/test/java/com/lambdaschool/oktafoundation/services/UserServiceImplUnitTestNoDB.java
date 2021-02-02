@@ -1,6 +1,6 @@
 package com.lambdaschool.oktafoundation.services;
 
-import com.lambdaschool.oktafoundation.OktaFoundationApplication;
+import com.lambdaschool.oktafoundation.OktaFoundationApplicationTest;
 import com.lambdaschool.oktafoundation.exceptions.ResourceNotFoundException;
 import com.lambdaschool.oktafoundation.models.Role;
 import com.lambdaschool.oktafoundation.models.User;
@@ -30,8 +30,10 @@ import static org.mockito.ArgumentMatchers.anyString;
  * This test class covers 100% of the methods and 100% of the lines in the UserServiceImpl.class
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = OktaFoundationApplication.class)
-public class UserServiceImplTest
+@SpringBootTest(classes = OktaFoundationApplicationTest.class,
+    properties = {
+        "command.line.runner.enabled=false"})
+public class UserServiceImplUnitTestNoDB
 {
     @Autowired
     private UserService userService;
