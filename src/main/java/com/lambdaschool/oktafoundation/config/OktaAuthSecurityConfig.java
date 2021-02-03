@@ -16,7 +16,7 @@ public class OktaAuthSecurityConfig extends WebSecurityConfigurerAdapter
 {
     @Bean
     // see https://www.devglan.com/spring-security/spring-boot-jwt-auth
-    public JwtAuthenticationFilter authenticationTokenFilterBean() throws Exception
+    public JwtAuthenticationFilter authenticationTokenFilterBean()
     {
         return new JwtAuthenticationFilter();
     }
@@ -73,7 +73,7 @@ public class OktaAuthSecurityConfig extends WebSecurityConfigurerAdapter
             .disable();
 
         // Insert the JwtAuthenticationFilter so that it can grab credentials from the
-        // local database before they are checked for authorization
+        // local database before they are checked for authorization (fix by Trevor Buchanan)
         http
             .addFilterBefore(authenticationTokenFilterBean(),
                 FilterSecurityInterceptor.class);

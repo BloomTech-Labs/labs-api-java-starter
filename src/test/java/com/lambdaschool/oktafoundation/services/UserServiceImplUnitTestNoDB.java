@@ -51,8 +51,7 @@ public class UserServiceImplUnitTestNoDB
 
 
     @Before
-    public void setUp() throws
-                        Exception
+    public void setUp()
     {
         userList = new ArrayList<>();
 
@@ -93,7 +92,6 @@ public class UserServiceImplUnitTestNoDB
         userList.add(u1);
 
         // data, user
-        ArrayList<UserRoles> datas = new ArrayList<>();
         User u2 = new User("cinnamon");
         u1.getRoles()
             .add(new UserRoles(u2,
@@ -169,8 +167,7 @@ public class UserServiceImplUnitTestNoDB
     }
 
     @After
-    public void tearDown() throws
-                           Exception
+    public void tearDown()
     {
     }
 

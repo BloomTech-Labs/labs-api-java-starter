@@ -44,8 +44,7 @@ public class UserControllerIntegrationTestWithDB
     private MockMvc mockMvc;
 
     @Before
-    public void setUp() throws
-                        Exception
+    public void setUp()
     {
         RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
 
@@ -55,8 +54,7 @@ public class UserControllerIntegrationTestWithDB
     }
 
     @After
-    public void tearDown() throws
-                           Exception
+    public void tearDown()
     {
     }
 

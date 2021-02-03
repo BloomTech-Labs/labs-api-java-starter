@@ -1,6 +1,8 @@
 package com.lambdaschool.oktafoundation;
 
 import com.lambdaschool.oktafoundation.models.Role;
+import com.lambdaschool.oktafoundation.models.User;
+import com.lambdaschool.oktafoundation.models.UserRoles;
 import com.lambdaschool.oktafoundation.services.RoleService;
 import com.lambdaschool.oktafoundation.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +61,18 @@ public class SeedData
         r1 = roleService.save(r1);
         r2 = roleService.save(r2);
         r3 = roleService.save(r3);
+
+        User u1 = new User("llama001@maildrop.cc");
+        u1.getRoles()
+            .add(new UserRoles(u1,
+                r1));
+        userService.save(u1);
+
+        User u2 = new User("barnbarn@maildrop.cc");
+        u2.getRoles()
+            .add(new UserRoles(u2,
+                r2));
+        userService.save(u2);
 
         // The following is an example user!
         /*
