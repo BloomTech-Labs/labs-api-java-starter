@@ -1,11 +1,12 @@
 package com.lambdaschool.oktafoundation.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lambdaschool.oktafoundation.OktaFoundationApplication;
+import com.lambdaschool.oktafoundation.OktaFoundationApplicationTest;
 import com.lambdaschool.oktafoundation.models.Role;
 import com.lambdaschool.oktafoundation.models.User;
 import com.lambdaschool.oktafoundation.models.UserRoles;
 import com.lambdaschool.oktafoundation.models.Useremail;
+import com.lambdaschool.oktafoundation.repository.UserRepository;
 import com.lambdaschool.oktafoundation.services.UserService;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.After;
@@ -41,11 +42,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-    classes = OktaFoundationApplication.class)
+    classes = OktaFoundationApplicationTest.class,
+    properties = {
+        "command.line.runner.enabled=false"})
 @AutoConfigureMockMvc
 @WithMockUser(username = "admin",
     roles = {"USER", "ADMIN"})
-public class UserControllerUnitTest
+public class UserControllerUnitTestNoDB
 {
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -55,11 +58,15 @@ public class UserControllerUnitTest
     @MockBean
     private UserService userService;
 
+    @MockBean
+    private UserRepository userrepos;
+
     private List<User> userList;
 
+    private User u1; // special as needed for security
+
     @Before
-    public void setUp() throws
-                        Exception
+    public void setUp()
     {
         userList = new ArrayList<>();
 
@@ -71,7 +78,7 @@ public class UserControllerUnitTest
         r3.setRoleid(3);
 
         // admin, data, user
-        User u1 = new User("admin");
+        u1 = new User("admin");
         u1.getRoles()
             .add(new UserRoles(u1,
                 r1));
@@ -100,7 +107,6 @@ public class UserControllerUnitTest
         userList.add(u1);
 
         // data, user
-        ArrayList<UserRoles> datas = new ArrayList<>();
         User u2 = new User("cinnamon");
         u1.getRoles()
             .add(new UserRoles(u2,
@@ -180,8 +186,7 @@ public class UserControllerUnitTest
     }
 
     @After
-    public void tearDown() throws
-                           Exception
+    public void tearDown()
     {
     }
 
@@ -190,6 +195,9 @@ public class UserControllerUnitTest
                                Exception
     {
         String apiUrl = "/users/users";
+
+        Mockito.when(userrepos.findByUsername(u1.getUsername()))
+            .thenReturn(u1);
 
         Mockito.when(userService.findAll())
             .thenReturn(userList);
@@ -220,6 +228,9 @@ public class UserControllerUnitTest
     {
         String apiUrl = "/users/user/name/like/cin";
 
+        Mockito.when(userrepos.findByUsername(u1.getUsername()))
+            .thenReturn(u1);
+
         Mockito.when(userService.findByNameContaining(any(String.class)))
             .thenReturn(userList);
 
@@ -249,6 +260,9 @@ public class UserControllerUnitTest
     {
         String apiUrl = "/users/user/12";
 
+        Mockito.when(userrepos.findByUsername(u1.getUsername()))
+            .thenReturn(u1);
+
         Mockito.when(userService.findUserById(12))
             .thenReturn(userList.get(1));
 
@@ -276,6 +290,9 @@ public class UserControllerUnitTest
     {
         String apiUrl = "/users/user/77";
 
+        Mockito.when(userrepos.findByUsername(u1.getUsername()))
+            .thenReturn(u1);
+
         Mockito.when(userService.findUserById(77))
             .thenReturn(null);
 
@@ -301,6 +318,9 @@ public class UserControllerUnitTest
                                 Exception
     {
         String apiUrl = "/users/user/name/testing";
+
+        Mockito.when(userrepos.findByUsername(u1.getUsername()))
+            .thenReturn(u1);
 
         Mockito.when(userService.findByName("testing"))
             .thenReturn(userList.get(0));
@@ -329,6 +349,9 @@ public class UserControllerUnitTest
     {
         String apiUrl = "/users/getuserinfo";
 
+        Mockito.when(userrepos.findByUsername(u1.getUsername()))
+            .thenReturn(u1);
+
         Mockito.when(userService.findByName(anyString()))
             .thenReturn(userList.get(0));
 
@@ -356,6 +379,9 @@ public class UserControllerUnitTest
     {
         String apiUrl = "/users/user";
 
+        Mockito.when(userrepos.findByUsername(u1.getUsername()))
+            .thenReturn(u1);
+
         Mockito.when(userService.save(any(User.class)))
             .thenReturn(userList.get(0));
 
@@ -375,11 +401,37 @@ public class UserControllerUnitTest
     {
         String apiUrl = "/users/user/{userid}";
 
+        Mockito.when(userrepos.findByUsername(u1.getUsername()))
+            .thenReturn(u1);
+
+        Mockito.when(userService.save(any(User.class)))
+            .thenReturn(userList.get(0));
+
+        RequestBuilder rb = MockMvcRequestBuilders.put(apiUrl,
+            100L)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .content("{\"username\": \"tigerUpdated\", \"password\": \"EATEATEAT\", \"primaryemail\" : \"ginger@home.local\"}");
+
+        mockMvc.perform(rb)
+            .andExpect(status().is2xxSuccessful())
+            .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    public void updatePartialUser() throws
+                             Exception
+    {
+        String apiUrl = "/users/user/{userid}";
+
+        Mockito.when(userrepos.findByUsername(u1.getUsername()))
+            .thenReturn(u1);
+
         Mockito.when(userService.update(any(User.class),
             any(Long.class)))
             .thenReturn(userList.get(0));
 
-        RequestBuilder rb = MockMvcRequestBuilders.put(apiUrl,
+        RequestBuilder rb = MockMvcRequestBuilders.patch(apiUrl,
             100L)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
@@ -400,6 +452,10 @@ public class UserControllerUnitTest
             "3")
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON);
+
+        Mockito.when(userrepos.findByUsername(u1.getUsername()))
+            .thenReturn(u1);
+
         mockMvc.perform(rb)
             .andExpect(status().is2xxSuccessful())
             .andDo(MockMvcResultHandlers.print());

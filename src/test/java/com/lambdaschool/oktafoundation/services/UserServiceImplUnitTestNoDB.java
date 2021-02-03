@@ -1,6 +1,6 @@
 package com.lambdaschool.oktafoundation.services;
 
-import com.lambdaschool.oktafoundation.OktaFoundationApplication;
+import com.lambdaschool.oktafoundation.OktaFoundationApplicationTest;
 import com.lambdaschool.oktafoundation.exceptions.ResourceNotFoundException;
 import com.lambdaschool.oktafoundation.models.Role;
 import com.lambdaschool.oktafoundation.models.User;
@@ -30,8 +30,10 @@ import static org.mockito.ArgumentMatchers.anyString;
  * This test class covers 100% of the methods and 100% of the lines in the UserServiceImpl.class
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = OktaFoundationApplication.class)
-public class UserServiceImplTest
+@SpringBootTest(classes = OktaFoundationApplicationTest.class,
+    properties = {
+        "command.line.runner.enabled=false"})
+public class UserServiceImplUnitTestNoDB
 {
     @Autowired
     private UserService userService;
@@ -40,14 +42,16 @@ public class UserServiceImplTest
     private UserRepository userrepos;
 
     @MockBean
+    private RoleService roleService;
+
+    @MockBean
     HelperFunctions helperFunctions;
 
     private List<User> userList;
 
 
     @Before
-    public void setUp() throws
-                        Exception
+    public void setUp()
     {
         userList = new ArrayList<>();
 
@@ -88,7 +92,6 @@ public class UserServiceImplTest
         userList.add(u1);
 
         // data, user
-        ArrayList<UserRoles> datas = new ArrayList<>();
         User u2 = new User("cinnamon");
         u1.getRoles()
             .add(new UserRoles(u2,
@@ -164,8 +167,7 @@ public class UserServiceImplTest
     }
 
     @After
-    public void tearDown() throws
-                           Exception
+    public void tearDown()
     {
     }
 
@@ -279,6 +281,9 @@ public class UserServiceImplTest
             .add(new Useremail(u2,
                 "tiger@tiger.local"));
 
+        Mockito.when(roleService.findRoleById(2))
+            .thenReturn(r2);
+
         Mockito.when(userrepos.save(any(User.class)))
             .thenReturn(u2);
 
@@ -304,6 +309,9 @@ public class UserServiceImplTest
 
         Mockito.when(userrepos.findById(103L))
             .thenReturn(Optional.of(u2));
+
+        Mockito.when(roleService.findRoleById(2))
+            .thenReturn(r2);
 
         Mockito.when(userrepos.save(any(User.class)))
             .thenReturn(u2);
@@ -343,6 +351,9 @@ public class UserServiceImplTest
         Mockito.when(userrepos.save(any(User.class)))
             .thenReturn(u2);
 
+        Mockito.when(roleService.findRoleById(2))
+            .thenReturn(r2);
+
         assertEquals("bunny@email.thump",
             userService.update(u2,
                 103L)
@@ -374,6 +385,9 @@ public class UserServiceImplTest
 
         Mockito.when(userrepos.findById(103L))
             .thenReturn(Optional.empty());
+
+        Mockito.when(roleService.findRoleById(2))
+            .thenReturn(r2);
 
         Mockito.when(helperFunctions.isAuthorizedToMakeChange(anyString()))
             .thenReturn(true);
@@ -409,6 +423,9 @@ public class UserServiceImplTest
         u2.getUseremails()
             .add(new Useremail(u2,
                 "bunny@email.thump"));
+
+        Mockito.when(roleService.findRoleById(2))
+            .thenReturn(r2);
 
         Mockito.when(userrepos.findById(103L))
             .thenReturn(Optional.of(u2));

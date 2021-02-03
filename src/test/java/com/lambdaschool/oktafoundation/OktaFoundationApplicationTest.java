@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 // @EnableJpaAuditing
 @SpringBootApplication
-public class OktaFoundationApplication
+public class OktaFoundationApplicationTest
 {
     /**
      * Main method to start the application.
@@ -17,7 +17,7 @@ public class OktaFoundationApplication
      */
     public static void main(String[] args)
     {
-        SpringApplication.run(OktaFoundationApplication.class,
+        SpringApplication.run(OktaFoundationApplicationTest.class,
             args);
     }
 }
