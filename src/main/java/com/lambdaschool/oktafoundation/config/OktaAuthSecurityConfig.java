@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 
 // This allows us to further restrict access to an endpoint inside of a controller.
@@ -24,6 +25,8 @@ public class OktaAuthSecurityConfig extends WebSecurityConfigurerAdapter
     @Override
     protected void configure(HttpSecurity http) throws Exception
     {
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
         http.authorizeRequests()
             .antMatchers("/",
                 "/h2-console/**",
