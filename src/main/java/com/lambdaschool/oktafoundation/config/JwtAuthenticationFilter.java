@@ -44,6 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
         FilterChain filterChain) throws ServletException, IOException
     {
         // find the username of the authenticated user
+        //String home(@AuthenticationPrincipal OidcUser user)
         Authentication authentication = SecurityContextHolder.getContext()
             .getAuthentication();
 
