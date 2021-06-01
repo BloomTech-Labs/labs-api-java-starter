@@ -1,5 +1,9 @@
 # Labs Java Okta Scaffolding
 
+## Purpose:
+
+The purpose of this project is to serve as a foundation, scaffolding, starting point for Labs project that will be having a Java Spring based backend.
+
 ## Some Useful Notes
 
 ### For PostgreSQL add the dependency
